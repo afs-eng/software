@@ -28,7 +28,8 @@ calcular valor total do estoque
 atualizar estoque de um produto
 
 """
-
+# ======================================================================================================================
+""" 
 # 1 - Contar letras: leia uma string e crie um dicionário com a contagem de cada letra.
 
 str = 'junte dois dicionários. Se a chave repetir, some os valores'
@@ -56,39 +57,50 @@ contagem = {}
 for palavra in ss:
     contagem[palavra] = contagem.get(palavra, 0) + 1
 
+
 print(f"Frase original: {s}")
 print("Contagem de palavras:")
 print(contagem)
 
 
+#=======================================================================================================================
+# 3 - Inverter chave/valor: dado um dicionário {chave: valor}, gere outro {valor: chave} (assuma valores únicos).
+
+
+dic = {'valor1': 1, 'valor2': 2, 'valor3': 3, 'valor4': 4}
+novo_dic = {}
+for chave, valor in dic.items():
+    novo_dic[valor] = novo_dic.get(valor, chave)
+# print(novo_dic)
+
+#=======================================================================================================================
 
 
 
+# 4 - Buscar aluno: crie um dicionário nome -> nota. Pergunte um nome e mostre a nota (ou “não encontrado”).
+
+aluno = {'andre':8, 'jacqueline': 9, 'camila': 10, 'gaby': 9}
+
+nome = input('Digite seu nome: ')
+if nome in aluno:
+    print(f'Nome: {nome}\nNota: {aluno[nome]}')
+else:
+    print('Aluno não encontrado')
+
+#=======================================================================================================================
+"""
 
 
+# 5 - Maior valor: encontre a chave com o maior valor em um dicionário (sem usar max() diretamente no dicionário).
 
+valores  = {'valor1': 4, 'valor2': 21, 'valor3': 34, 'valor4': 43}
 
+maior_valor: int = None
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+for chave, valor in valores.items():
+    if valor > maior_valor:
+        maior_valor = chave
+        print(f'{chave}: {valor}')
 
 
 
