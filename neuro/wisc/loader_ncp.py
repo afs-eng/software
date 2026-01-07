@@ -2,7 +2,7 @@ import re
 import pandas as pd
 from pathlib import Path
 from paths import TABELAS_NCP
-
+from datetime import date
 
 # =========================
 # UTILIDADES DE IDADE
@@ -14,6 +14,24 @@ def idade_em_meses(anos: int, meses: int) -> int:
     return anos * 12 + meses
 
 
+
+def idade_anos_meses(nascimento: date, avaliacao: date) -> tuple[int, int]:
+    if avaliacao < nascimento:
+        raise ValueError("Data de avaliação não pode ser anterior ao nascimento")
+
+    anos = avaliacao.year - nascimento.year
+    meses = avaliacao.month - nascimento.month
+
+    if avaliacao.day < nascimento.day:
+        meses -= 1
+
+    if meses < 0:
+        anos -= 1
+        meses += 12
+
+    return anos, meses
+
+
 # =========================
 # LEITURA DAS FAIXAS
 # =========================
@@ -23,40 +41,45 @@ def carregar_faixas_ncp() -> list[dict]:
 
     for arquivo in TABELAS_NCP.glob("idade_*.csv"):
         nome = arquivo.stem
-        match = re.match(r"idade_(\d+)-(\d+)-(\d+)-(\d+)", nome)
 
+        match = re.match(r"idade_(\d+)-(\d+)-(\d+)-(\d+)$", nome)
         if not match:
-            # Tentar formato alternativo com underscore (embora o glob mostre hífens)
-            match = re.match(r"idade_(\d+)-(\d+)_(\d+)-(\d+)", nome)
+            match = re.match(r"idade_(\d+)-(\d+)_(\d+)-(\d+)$", nome)
             if not match:
                 continue
 
         a1, m1, a2, m2 = map(int, match.groups())
 
-        faixa = {
-            "min": idade_em_meses(a1, m1),
-            "max": idade_em_meses(a2, m2),
-            "arquivo": arquivo
-        }
+        min_meses = idade_em_meses(a1, m1)
+        max_exclusivo = idade_em_meses(a2, m2) + 1  # torna faixa não ambígua
 
-        faixas.append(faixa)
+        faixas.append({
+            "min": min_meses,
+            "max_exclusivo": max_exclusivo,
+            "arquivo": arquivo
+        })
 
     if not faixas:
         raise RuntimeError("Nenhuma tabela NCP válida encontrada")
 
+    faixas.sort(key=lambda f: f["min"])
     return faixas
-
 
 # =========================
 # SELEÇÃO DA TABELA
 # =========================
 
-def carregar_tabela_ncp(anos: int, meses: int) -> pd.DataFrame:
+from pathlib import Path
+
+def obter_arquivo_ncp(anos: int, meses: int) -> Path:
     idade_meses = idade_em_meses(anos, meses)
     faixas = carregar_faixas_ncp()
 
     for faixa in faixas:
-        if faixa["min"] <= idade_meses <= faixa["max"]:
-            return pd.read_csv(faixa["arquivo"], encoding="utf-8")
+        if faixa["min"] <= idade_meses < faixa["max_exclusivo"]:
+            return faixa["arquivo"]  # Path
 
-    raise ValueError("Idade fora das faixas etárias NCP")
+    raise ValueError(f"Idade fora das faixas etárias NCP: {anos}a {meses}m")
+
+
+

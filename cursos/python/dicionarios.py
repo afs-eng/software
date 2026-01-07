@@ -28,6 +28,8 @@ calcular valor total do estoque
 atualizar estoque de um produto
 
 """
+from traceback import print_tb
+
 # ======================================================================================================================
 """ 
 # 1 - Contar letras: leia uma string e crie um dicionário com a contagem de cada letra.
@@ -88,33 +90,44 @@ else:
     print('Aluno não encontrado')
 
 #=======================================================================================================================
-"""
-
-
 # 5 - Maior valor: encontre a chave com o maior valor em um dicionário (sem usar max() diretamente no dicionário).
 
-valores  = {'valor1': 4, 'valor2': 21, 'valor3': 34, 'valor4': 43}
+valores  = {'valor1': 46, 'valor2': 21, 'valor3': 34, 'valor4': 43}
 
-maior_valor: int = None
+maior_chave = None
+maior_valor = None
 
 for chave, valor in valores.items():
-    if valor > maior_valor:
-        maior_valor = chave
-        print(f'{chave}: {valor}')
+    if maior_valor is None or valor > maior_valor:
+        maior_valor = valor
+        maior_chave = chave
+
+print(f'{maior_chave}:{maior_valor}')
+#=======================================================================================================================
+
+#=======================================================================================================================
+
+#=======================================================================================================================
+
+#=======================================================================================================================
+"""
+
+# 6 - Mesclar dicionários: junte dois dicionários. Se a chave repetir, some os valores.
 
 
+valores1  = {'valor1': 46, 'valor2': 21, 'valor3': 34, 'valor4': 50}
 
+valores2 = {'valor5': 33, 'valor6': 21, 'valor7': 39, 'valor4': 11}
+# {'valor1': 46, 'valor2': 21, 'valor3': 34, 'valor4': 22, 'valor5': 33, 'valor6': 21, 'valor7': 39}
 
+aux = valores1.copy()
 
-
-
-
-
-
-
-
-
-
+for chave, valor in valores2.items():
+    if chave in aux:
+        aux[chave] += valor
+    else:
+        aux[chave] = valor
+print(aux)
 
 
 

@@ -1,9 +1,10 @@
 import pandas as pd
 from paths import TABELAS_A8, TABELAS_CD, TABELAS_NCP
+from loader_ncp import obter_arquivo_ncp, idade_anos_meses
 
-
-df = pd.read_csv(TABELAS_NCP / 'idade_6-4-6-7.csv')
-
+arquivo = obter_arquivo_ncp(10, 5)
+df = pd.read_csv(TABELAS_NCP / str(arquivo))
+print(arquivo.name)
 def valor_no_intervalo(valor, celula):
     if pd.isna(celula) or celula == "-" or celula == "":
         return False
