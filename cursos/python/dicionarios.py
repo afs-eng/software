@@ -127,9 +127,26 @@ for chave, valor in valores2.items():
         aux[chave] += valor
     else:
         aux[chave] = valor
-print(aux)
 
 
+valores = {'CB': 12, 'SM': 12, 'DG': 5, 'CN': 13, 'CD': 9, 'VC': 13, 'SNL': 9, 'RM': 14, 'CO': 12, 'PS': 11}
+
+
+cv = []
+
+for chave, valor in valores.items():
+    if 'SM' in chave:
+        sm = valor
+        cv.append(sm)
+    elif 'VC' in chave:
+        vc= valor
+        cv.append(vc)
+    elif 'CO' in chave:
+        co= valor
+        cv.append(co)
+
+total = sum(cv)
+print(f'Total: {total}')
 
 
 

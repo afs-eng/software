@@ -2,7 +2,7 @@ import pandas as pd
 from paths import TABELAS_A8, TABELAS_CD, TABELAS_NCP
 from loader_ncp import obter_arquivo_ncp, idade_anos_meses
 
-arquivo = obter_arquivo_ncp(10, 5)
+arquivo = obter_arquivo_ncp(13, 0)
 df = pd.read_csv(TABELAS_NCP / str(arquivo))
 print(arquivo.name)
 def valor_no_intervalo(valor, celula):
@@ -45,3 +45,7 @@ for subteste in subtestes:
 print("\nResultados (PP):")
 for subteste, pp in resultados_pp.items():
     print(f"{subteste}: PP = {pp}")
+print(resultados_pp)
+
+
+
